@@ -2,6 +2,10 @@ package psalms;
 
 import javax.swing.*;
 import file.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +24,7 @@ public class Psalms {
         List<String> psalms = new ArrayList(), file;//make lists
         List<Integer> psalmsnum = new ArrayList();
         int key, index;
-        file = fileRead.read("Psalms.txt");//read the file and add to a list
+        file = read("Psalms.txt");//read the file and add to a list
         for (int i = 0; i < file.size(); i++) {//split up original list into numbers and names
             if (i % 2 == 0) {
                 psalmsnum.add(Integer.parseInt(file.get(i)));
@@ -52,5 +56,27 @@ public class Psalms {
         } else {
             return -1;//return -1 if nothing is found
         }
+    }
+    public static ArrayList read(String path) {
+        int num = 0;
+        ArrayList contents = new ArrayList();
+        String line;
+        try {
+            BufferedReader br = new BufferedReader(
+                    new FileReader(path));
+
+            while ((line = br.readLine()) != null) {
+                contents.add(num, line);
+                num++;
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found");
+            System.exit(0);
+
+        } catch (IOException ex) {
+            System.out.println("An error has occured");
+            System.exit(1);
+        }
+        return contents;
     }
 }
